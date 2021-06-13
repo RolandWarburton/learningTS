@@ -1,0 +1,36 @@
+{
+	"name": "myproject",
+	"author": "Roland Warburton",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"start": "node dist/index.js",
+		"dev": "concurrently \"npm run lint:watch\" \"nodemon src/index.ts --delay 500\"",
+		"build": "tsc -p .",
+		"prettier:watch": "onchange 'src/**/*.ts' -- prettier --write {{changed}}",
+		"lint": "eslint . --ext .ts",
+		"lint:fix": "eslint . --ext .ts --fix",
+		"lint:watch": "onchange 'src/**/*.ts' -- npm run lint"
+	},
+	"engines": {
+		"node": ">=14.0.0"
+	},
+	"keywords": [],
+	"license": "ISC",
+	"dependencies": {
+		"express": "^4.17.1"
+	},
+	"devDependencies": {
+		"@types/express": "^4.17.12",
+		"@types/node": "^15.12.2",
+		"@typescript-eslint/eslint-plugin": "^4.26.1",
+		"eslint-config-prettier": "^8.3.0",
+		"eslint-plugin-node": "^11.1.0",
+		"nodemon": "^2.0.7",
+		"onchange": "^7.1.0",
+		"prettier": "^2.3.1",
+		"ts-node": "^10.0.0",
+		"typescript": "^4.3.2"
+	}
+}
