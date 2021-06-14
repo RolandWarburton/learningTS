@@ -6,7 +6,7 @@
 	"main": "index.js",
 	"scripts": {
 		"start": "node dist/index.js",
-		"dev": "concurrently \"npm run lint:watch\" \"nodemon src/index.ts --delay 500\"",
+		"dev": "concurrently \"npm run lint:watch\" \"nodemon src/index.ts --delay 500 --exec ts-node src/index.ts\"",
 		"build": "tsc -p .",
 		"prettier:watch": "onchange 'src/**/*.ts' -- prettier --write {{changed}}",
 		"lint": "eslint . --ext .ts",
