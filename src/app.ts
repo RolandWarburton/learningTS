@@ -3,6 +3,7 @@ import express from "express";
 import helmet from "helmet";
 import Route from "./interfaces/routes.interface";
 import errorMiddleware from "./middleware/error.middleware";
+import { logger } from "./utils/logger";
 
 class App {
 	// List all the fields that this class will contain
@@ -24,7 +25,7 @@ class App {
 
 	public listen(): void {
 		this.app.listen(this.port, () => {
-			console.log(`🚀 App listening on the port ${this.port}`);
+			logger.info(`🚀 App listening on the port ${this.port}`);
 		});
 	}
 
