@@ -1,13 +1,11 @@
-import express, { Application, Request, Response } from "express";
-import a from "./myModule";
+import App from "./app";
+import Route from "./interfaces/routes.interface";
+import IndexRoute from "./routes/index.route";
 
-const app: Application = express();
+// We get the Route[] interface and use that to craft the IndexRoute
+// The array of routes is passed into the App
+const routes: Route[] = [new IndexRoute()];
 
-app.get("/", (req: Request, res: Response) => {
-	console.log(a);
-	res.status(200).json({ message: "hello world" });
-});
+const app = new App(routes);
 
-app.listen(3000, () => {
-	console.log("server running");
-});
+app.listen();
