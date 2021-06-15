@@ -5,7 +5,7 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"start": "node dist/index.js",
+		"start": "npm run build && node --inspect dist/index.js",
 		"dev": "DEBUG=app* concurrently \"npm run lint:watch\" \"nodemon src/index.ts --delay 1 --exec ts-node src/index.ts\"",
 		"build": "tsc -p .",
 		"prettier:watch": "onchange 'src/**/*.ts' -- prettier --write {{changed}}",
