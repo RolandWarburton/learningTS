@@ -16,6 +16,7 @@ const logFormat = winston.format.printf(
 const transports: transport[] = [];
 
 transports.push(
+	// https://github.com/winstonjs/winston-daily-rotate-file
 	new dailyRotateFile({
 		filename: "application-%DATE%.log",
 		datePattern: "YYYY-MM-DD-HH",
