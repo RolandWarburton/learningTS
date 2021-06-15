@@ -1,3 +1,8 @@
+/*
+ * Log Level
+ * error: 0, warn: 1, info: 2, http: 3, verbose: 4, debug: 5, silly: 6
+ */
+
 /* eslint-disable node/no-unpublished-import */
 import fs from "fs";
 import winston, { transport } from "winston";
@@ -9,12 +14,23 @@ if (!fs.existsSync(logDir)) {
 	fs.mkdirSync(logDir);
 }
 
+// ##──── LOG FORMATS ───────────────────────────────────────────────────────────────────────
+
 const logFormat = winston.format.printf(
 	({ timestamp, level, message }) => `${timestamp} ${level}: ${message}`
 );
 
+const logFormatTimestamp = winston.format.combine(
+	winston.format.timestamp({ format: "YYYY-MM-DD HH:mm:ss" }),
+	winston.format.printf(({ timestamp, level, message }) => `${timestamp} ${level}: ${message}`)
+);
+
+// ##──── TRANSPORTS ────────────────────────────────────────────────────────────────────────
+
+// Store a generic list of transports
 const transports: transport[] = [];
 
+// Transport One
 transports.push(
 	// https://github.com/winstonjs/winston-daily-rotate-file
 	new dailyRotateFile({
@@ -27,25 +43,46 @@ transports.push(
 	})
 );
 
-/*
- * Log Level
- * error: 0, warn: 1, info: 2, http: 3, verbose: 4, debug: 5, silly: 6
- */
+// Transport Two
+transports.push(new winston.transports.Console());
+
+// ##──── INFO LEVEL SPECIFIC LOGGER ────────────────────────────────────────────────────────
+
+// level			when logger.info() is called, this runs
+// format			winston.format.printf, or winston.format.json, etc.
+// 						winston.format.combine lets me pass the timestamp to the custom logFormat as well (as a param)
+// defaultMeta		meta information included with the log
+// transports		where is the file going. IE to the log rotator, and to the console
 const logger = winston.createLogger({
-	format: winston.format.combine(
-		winston.format.timestamp({
-			format: "YYYY-MM-DD HH:mm:ss",
-		}),
-		logFormat
-	),
+	level: "info",
+	format: winston.format.combine(winston.format.timestamp(), logFormat),
+	defaultMeta: { service: "user-service" },
 	transports: transports,
 });
 
+// Add an additional transport to the project to log to the console as well
+// We could also have specified this as a transport in the transports array
 logger.add(
 	new winston.transports.Console({
 		format: winston.format.combine(winston.format.splat(), winston.format.colorize()),
 	})
 );
+
+// ##──── GENERIC LOGGER ────────────────────────────────────────────────────────────────────
+
+// Because this generic logger does not have a {level: info|warn|error|etc} field, it will trigger for every single winston log event
+const genericLogger = winston.createLogger({
+	format: logFormatTimestamp,
+	transports: [],
+});
+
+genericLogger.add(
+	new winston.transports.Console({
+		format: winston.format.combine(winston.format.splat(), winston.format.colorize()),
+	})
+);
+
+// ##──── STREAM LOGGER ─────────────────────────────────────────────────────────────────────
 
 // This is an object that can be called through other middleware,
 // 	for example morgan can call the stream.write function to write its logs INTO winston
@@ -55,4 +92,4 @@ const stream = {
 	},
 };
 
-export { logger, stream };
+export { genericLogger, logger, stream };
