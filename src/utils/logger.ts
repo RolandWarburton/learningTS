@@ -62,11 +62,11 @@ const logger = winston.createLogger({
 
 // Add an additional transport to the project to log to the console as well
 // We could also have specified this as a transport in the transports array
-logger.add(
-	new winston.transports.Console({
-		format: winston.format.combine(winston.format.splat(), winston.format.colorize()),
-	})
-);
+// logger.add(
+// 	new winston.transports.Console({
+// 		format: winston.format.combine(winston.format.splat(), winston.format.colorize()),
+// 	})
+// );
 
 // ##──── GENERIC LOGGER ────────────────────────────────────────────────────────────────────
 
