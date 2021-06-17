@@ -3,7 +3,8 @@
     "env": {
     "node": true,
     "commonjs": true,
-    "es6": true
+    "es6": true,
+    "jest": true
   },
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
@@ -37,5 +38,13 @@
     "node/prefer-global/url": ["error", "always"],
     "node/prefer-promises/dns": "error",
     "node/prefer-promises/fs": "error"
-  }
+  },
+  // Fix for test files producing a "node/no-unpublished-import" lint error
+  // https://github.com/mysticatea/eslint-plugin-node/issues/47
+  "overrides": [{
+    "files": "**/*.test.ts",
+    "rules": {
+        "node/no-unpublished-import": 0
+    }
+  }]
 }

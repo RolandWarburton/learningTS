@@ -4,9 +4,22 @@
 import { NextFunction, Request, Response } from "express";
 
 class IndexController {
-	public index = (req: Request, res: Response, next: NextFunction): void => {
+	public index = (req: Request, res: Response): any => {
+		res.json({ hello: "world" });
+		// try {
+		// 	// res.sendStatus(200);
+		// } catch (error) {
+		// 	// next(error);
+		// 	return 1;
+		// }
+	};
+	public pageNotFound = (req: Request, res: Response, next: NextFunction): void => {
 		try {
-			res.sendStatus(200);
+			if (req.accepts("json")) {
+				res.status(404).json({ error: "Not Found" });
+			} else {
+				res.sendStatus(404);
+			}
 		} catch (error) {
 			next(error);
 		}
