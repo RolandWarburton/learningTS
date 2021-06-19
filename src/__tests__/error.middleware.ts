@@ -61,7 +61,7 @@ describe("test", () => {
 		expect(resultJson).toEqual({ hello: "world" });
 	});
 
-	it("calls the next function when the json error field is passed to it", () => {
+	it("calls the next function when the json body.error field is passed to it", () => {
 		const controller = new IndexController().index;
 
 		mockRequest.body = { error: "please" };
