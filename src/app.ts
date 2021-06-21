@@ -24,6 +24,7 @@ class App {
 	}
 
 	public listen(): void {
+		/* istanbul ignore next */
 		this.app.listen(this.port, () => {
 			logger.info(`🚀 App listening on the port ${this.port}`);
 		});
