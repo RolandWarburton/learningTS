@@ -28,6 +28,7 @@
 // };
 
 module.exports = {
+	testEnvironment: "node",
 	moduleFileExtensions: ["js", "ts", "tsx"],
 	transform: {
 		"^.+\\.(t|j)s$": "ts-jest",
