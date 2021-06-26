@@ -3,6 +3,7 @@
 
 import { NextFunction, Request, Response } from "express";
 import HttpException from "../exceptions/HttpException";
+import { logger } from "../utils/logger";
 
 class IndexController {
 	public index = (req: Request, res: Response, next: NextFunction): void => {
@@ -18,6 +19,7 @@ class IndexController {
 		}
 	};
 	public pageNotFound = (req: Request, res: Response, next: NextFunction): void => {
+		logger.info("page not found");
 		try {
 			if (req.accepts("json")) {
 				res.status(404).json({ error: "Not Found" });
