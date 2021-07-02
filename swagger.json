@@ -1,43 +1,67 @@
 {
-	"openapi": "3.0.1",
+	"openapi": "3.0.3",
 	"info": {
+		"description": "My Example App",
 		"version": "1.0.0",
-		"title": "The Title of your project",
-		"description": "A description of your project",
-		"license": {
-			"name": "Commons Clause License",
-			"url": "https://opensource.org/licenses/MIT"
+		"title": "Example App",
+		"contact": {
+			"name": "Roland",
+			"email": "abc@gmail.com"
 		}
 	},
-	"consumes": ["application/json"],
-	"produces": ["application/json"],
+	"servers": [
+		{
+			"url": "localhost:3000/api",
+			"description": "development server",
+			"variables": {
+				"port": {
+					"default": "3000"
+				}
+			},
+			"basePath": {
+				"default": "v1"
+			}
+		},
+		{
+			"url": "example.rolandw.dev/api",
+			"description": "Production server",
+			"variables": {
+				"port": {
+					"enum": ["443", "80"],
+					"default": "443"
+				}
+			},
+			"basePath": {
+				"default": "v1"
+			}
+		}
+	],
+	"host": "localhost:3080",
+	"basePath": "/api",
 	"paths": {
-		"/pets": {
+		"/todos": {
 			"get": {
-				"description": "Returns all pets from the system that the user has access to",
-				"operationId": "findPets",
-				"produces": ["application/json", "application/xml", "text/xml", "text/html"],
-				"parameters": [
-					{
-						"name": "tags",
-						"in": "query",
-						"description": "tags to filter by",
-						"required": false,
-						"type": "array",
-						"items": {
-							"type": "string"
-						},
-						"collectionFormat": "csv"
+				"summary": "Get all the tasks",
+				"description": "Get all the tasks",
+				"produces": ["application/json"],
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "successful operation",
+						"schema": {
+							"type": "array",
+							"items": {
+								"$ref": "#/definitions/todosResponse"
+							}
+						}
 					},
-					{
-						"name": "limit",
-						"in": "query",
-						"description": "maximum number of results to return",
-						"required": false,
-						"type": "integer",
-						"format": "int32"
+					"400": {
+						"description": "Invalid status value",
+						"schema": {
+							"$ref": "#/definitions/InvalidResponse"
+						}
 					}
-				]
+				}
 			}
 		}
 	}

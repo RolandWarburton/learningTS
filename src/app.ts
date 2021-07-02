@@ -4,6 +4,7 @@ import helmet from "helmet";
 import Route from "./interfaces/routes.interface";
 import errorMiddleware from "./middleware/error.middleware";
 import { logger } from "./utils/logger";
+import openApiSettings from "./openApiSettings";
 // eslint-disable-next-line node/no-unpublished-import
 import swaggerUi from "swagger-ui-express";
 // eslint-disable-next-line node/no-unpublished-import
@@ -55,18 +56,11 @@ class App {
 	// Create the swagger UI for openapi documentation
 	// This step MUST come before the initialize routes
 	private initilizeDocs() {
-		const options = {
-			definition: {
-				openapi: "3.0.0",
-				info: {
-					title: "Hello World",
-					version: "1.0.0",
-				},
-			},
-			apis: ["./*.js"], // files containing annotations as above
-		};
+		// use swagger-jsdoc to get openapi scheme
+		const openapiSpecification = swaggerJsdoc(openApiSettings);
 
-		const openapiSpecification = swaggerJsdoc(options);
+		// or import an openapi spec
+		// const fs.readFileSync("../swagger.json", {format: "utf-8"})
 
 		this.app.use("/api", swaggerUi.serve, swaggerUi.setup(openapiSpecification));
 	}
@@ -78,6 +72,8 @@ class App {
 		});
 	}
 
+	// This should be initilized last to catch any errors
+	// This will also be hit if you have not implemented a 404 page
 	private initializeErrorHandling() {
 		this.app.use(errorMiddleware);
 	}
