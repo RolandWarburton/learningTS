@@ -4,8 +4,9 @@ import helmet from "helmet";
 import Route from "./interfaces/routes.interface";
 import errorMiddleware from "./middleware/error.middleware";
 import { logger } from "./utils/logger";
-// import fs from "fs";
+// eslint-disable-next-line node/no-unpublished-import
 import swaggerUi from "swagger-ui-express";
+// eslint-disable-next-line node/no-unpublished-import
 import swaggerJsdoc from "swagger-jsdoc";
 
 class App {
@@ -54,9 +55,6 @@ class App {
 	// Create the swagger UI for openapi documentation
 	// This step MUST come before the initialize routes
 	private initilizeDocs() {
-		// const f = fs.readFileSync("./swagger.json", "utf-8");
-		// const swaggerDocument = JSON.parse(f);
-
 		const options = {
 			definition: {
 				openapi: "3.0.0",
@@ -65,15 +63,12 @@ class App {
 					version: "1.0.0",
 				},
 			},
-			apis: ["./routes*.js"], // files containing annotations as above
+			apis: ["./*.js"], // files containing annotations as above
 		};
 
 		const openapiSpecification = swaggerJsdoc(options);
 
 		this.app.use("/api", swaggerUi.serve, swaggerUi.setup(openapiSpecification));
-
-		// this.app.use("/api", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-		// this.app.get("/api", swaggerUi.setup(swaggerDocument));
 	}
 
 	// consume the routes and add them to the app
