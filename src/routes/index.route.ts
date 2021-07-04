@@ -7,22 +7,6 @@ import { Router } from "express";
 import IndexController from "../controllers/index.controller";
 import Route from "../interfaces/routes.interface";
 
-/**
- * @openapi
- * /:
- *   get:
- *     summary: returns root with help
- *     description: returns root with help
- *     tags:
- *       - users
- *     responses:
- *       200:
- *         description: Returns a mysterious string.
- *         content:
- *           application/json:
- *             schemea:
- *               type
- */
 class IndexRoute implements Route {
 	public path = "/";
 	public router = Router();
