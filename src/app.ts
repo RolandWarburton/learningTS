@@ -2,13 +2,20 @@ import cors from "cors";
 import express from "express";
 import helmet from "helmet";
 import Route from "./interfaces/routes.interface";
-import errorMiddleware from "./middleware/error.middleware";
 import { logger } from "./utils/logger";
-import openApiSettings from "./openApiSettings";
+import httpExceptionMiddleware from "./middleware/httpException.middleware";
 // eslint-disable-next-line node/no-unpublished-import
 import swaggerUi from "swagger-ui-express";
 // eslint-disable-next-line node/no-unpublished-import
-import swaggerJsdoc from "swagger-jsdoc";
+import { OpenAPIV3 } from "openapi-types";
+import openapiSpecification from "./swagger";
+
+// ? import swagger-jsdoc optionally for using jsdoc OpenAPI documentation
+// eslint-disable-next-line node/no-unpublished-import
+// import swaggerJsdoc from "swagger-jsdoc";
+
+// ? import errorMiddleware to catch errors that are not just HttpExceptions
+// import errorMiddleware from "./middleware/error.middleware";
 
 class App {
 	// List all the fields that this class will contain
@@ -57,12 +64,14 @@ class App {
 	// This step MUST come before the initialize routes
 	private initilizeDocs() {
 		// use swagger-jsdoc to get openapi scheme
-		const openapiSpecification = swaggerJsdoc(openApiSettings);
+		// const openapiSpecification: Partial<OpenAPIV3.Document> = swaggerJsdoc(openApiSettings);
 
-		// or import an openapi spec
-		// const fs.readFileSync("../swagger.json", {format: "utf-8"})
-
-		this.app.use("/api", swaggerUi.serve, swaggerUi.setup(openapiSpecification));
+		// or import an openapi spec (my preferred method) by importing the full doc
+		this.app.use(
+			"/api",
+			swaggerUi.serve,
+			swaggerUi.setup(openapiSpecification as OpenAPIV3.Document)
+		);
 	}
 
 	// consume the routes and add them to the app
@@ -75,7 +84,11 @@ class App {
 	// This should be initilized last to catch any errors
 	// This will also be hit if you have not implemented a 404 page
 	private initializeErrorHandling() {
-		this.app.use(errorMiddleware);
+		this.app.use(httpExceptionMiddleware);
+
+		// Optionally you can enable this error middleware to catch errors of generic type Error (instead of just HTTP exceptions)
+		// 		This is possible because the httpExceptionMiddleware will pass any error on if its not a httpException
+		// this.app.use(errorMiddleware);
 	}
 }
 
