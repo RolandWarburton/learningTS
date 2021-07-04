@@ -22,6 +22,7 @@
 	"keywords": [],
 	"license": "ISC",
 	"dependencies": {
+		"ajv": "^7.1.1",
 		"cors": "^2.8.5",
 		"debug": "^3.2.7",
 		"express": "^4.17.1",
