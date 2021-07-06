@@ -18,11 +18,12 @@ class IndexController {
 			next(error);
 		}
 	};
+
 	public pageNotFound = (req: Request, res: Response, next: NextFunction): void => {
 		logger.info("page not found");
 		try {
 			if (req.accepts("json")) {
-				res.status(404).json({ error: "Not Found" });
+				res.status(404).json({ error: "Page Not Found" });
 			} else {
 				res.sendStatus(404);
 			}
