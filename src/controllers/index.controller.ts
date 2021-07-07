@@ -12,6 +12,7 @@ class IndexController {
 			if (!req?.body?.error) {
 				res.status(200).json({ hello: "world" });
 			} else {
+				res.status(500);
 				next(new HttpException(500, "you messed up"));
 			}
 		} catch (error) {

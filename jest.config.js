@@ -26,8 +26,7 @@
 // 	},
 // 	testMatch: ["**/__tests__/*.+(ts|tsx|js)"],
 // };
-
-module.exports = {
+const base = {
 	testEnvironment: "node",
 	moduleFileExtensions: ["js", "ts", "tsx"],
 	transform: {
@@ -38,7 +37,42 @@ module.exports = {
 			tsconfig: "tsconfig.json",
 		},
 	},
-	testMatch: ["**/__tests__/*.+(ts|tsx|js)"],
 	preset: "ts-jest",
 	testPathIgnorePatterns: ["<rootDir>/dist"],
 };
+
+const unit = {
+	...base,
+	testMatch: ["**/__tests__/*.+(ts|tsx|js)"],
+};
+
+const intergration = {
+	...base,
+	testMatch: ["**/__tests__/intergrations/*.+(ts|tsx|js)"],
+};
+
+module.exports = () => {
+	switch (process.env["SUITE"]) {
+		case "unit":
+			return unit;
+		case "intergration":
+			return intergration;
+		default:
+			return { ...unit, testMatch: [...unit.testMatch, ...intergration.testMatch] };
+	}
+};
+
+// {
+// 	testEnvironment: "node",
+// 	moduleFileExtensions: ["js", "ts", "tsx"],
+// 	transform: {
+// 		"^.+\\.(t|j)s$": "ts-jest",
+// 	},
+// 	globals: {
+// 		"ts-jest": {
+// 			tsconfig: "tsconfig.json",
+// 		},
+// 	},
+// 	preset: "ts-jest",
+// 	testPathIgnorePatterns: ["<rootDir>/dist"],
+// };

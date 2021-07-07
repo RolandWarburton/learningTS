@@ -13,7 +13,9 @@
 		"lint": "eslint . --ext .ts",
 		"lint:fix": "eslint . --ext .ts --fix",
 		"lint:watch": "onchange 'src/**/*.ts' -- npm run lint",
-		"test": "jest",
+		"test": "jest --config=jest.config.js",
+		"test:unit": "SUITE=unit jest --config=jest.config.js --watch",
+		"test:intergration": "SUITE=intergration jest --config=jest.config.js --watch --detectOpenHandles",
 		"swagger": "tsc -p openapi && node dist/swagger/index.js"
 	},
 	"engines": {

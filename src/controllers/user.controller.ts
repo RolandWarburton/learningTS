@@ -7,6 +7,7 @@ import User from "../models/responses/user";
 
 class UserController {
 	public user = (req: Request, res: Response, next: NextFunction): void => {
+		// Define status for the HTTP request to be sent later
 		// our user database
 		const users: Array<User> = [
 			{
@@ -22,8 +23,15 @@ class UserController {
 		// 		because HttpException is an Error (extends the error class)
 		try {
 			const user = users.find((user) => user.id == req.params["id"]);
-			if (!user) next(new HttpException(404, "user not found"));
-			else res.status(200).json(user);
+			if (!user) {
+				res.status(404);
+				next(new HttpException(404, "user not found"));
+			} else {
+				res.status(200);
+				res.json(user);
+			}
+
+			// set the status
 		} catch (error) {
 			// the HTTP exception middleware will read this even if its a standard Error and not a HttpException
 			// then if its NOT a HTTP exception it just gets passed along the chain, to either express to handle the error,

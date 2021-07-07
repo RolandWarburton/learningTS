@@ -19,7 +19,7 @@ import Ajv from "ajv";
 class UserRoute implements Route {
 	public path = "/user/:id";
 	public router = Router();
-	public userController = new UserController();
+	public controller = new UserController();
 	private validator = new Ajv().compile(userRequestSchema);
 
 	constructor() {
@@ -30,7 +30,7 @@ class UserRoute implements Route {
 		this.router.get(
 			`${this.path}`,
 			validateRequest<UserRequest>("params", this.validator),
-			this.userController.user
+			this.controller.user
 		);
 	}
 }

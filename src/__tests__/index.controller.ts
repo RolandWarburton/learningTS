@@ -67,6 +67,8 @@ describe("test", () => {
 		mockRequest.body = { error: "please" };
 		controller(mockRequest as Request, mockResponse as Response, nextFunction as NextFunction);
 
+		expect(resultStatus).toBe(500);
+
 		// check that the next function has been called
 		expect(nextFunction).toHaveBeenCalledTimes(1);
 	});
@@ -77,7 +79,9 @@ describe("test", () => {
 		mockRequest.body = { noError: "please" };
 		controller(mockRequest as Request, mockResponse as Response, nextFunction as NextFunction);
 
-		// check that the next function has been called
+		expect(resultStatus).toBe(200);
+
+		// check that the next function has NOT been called
 		expect(nextFunction).toHaveBeenCalledTimes(0);
 	});
 });
