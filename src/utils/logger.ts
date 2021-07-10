@@ -76,11 +76,32 @@ const genericLogger = winston.createLogger({
 	transports: [],
 });
 
+// This is a dead (silent: true) logger that just exists as a backup if there is no transports defined
+// The purpose of this is because if we are not running in development or production (EG process.env.NODE_ENV === "test")
+// 		Then we decide to just log nothing at all
 genericLogger.add(
 	new winston.transports.Console({
-		format: winston.format.combine(winston.format.splat(), winston.format.colorize()),
+		silent: true,
 	})
 );
+
+// add a transport for development
+if (process.env["NODE_ENV"] == "development") {
+	genericLogger.add(
+		new winston.transports.Console({
+			format: winston.format.printf(({ level, message }) => `${level} ${message}`),
+		})
+	);
+}
+
+// add a transport for production
+if (process.env["NODE_ENV"] == "production") {
+	genericLogger.add(
+		new winston.transports.Console({
+			format: winston.format.combine(winston.format.splat(), winston.format.colorize()),
+		})
+	);
+}
 
 // ##──── STREAM LOGGER ─────────────────────────────────────────────────────────────────────
 
