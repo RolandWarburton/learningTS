@@ -16,7 +16,8 @@ function errorMiddleware(error: unknown, req: Request, res: Response, next: Next
 		res.setHeader("Content-Type", "application/json");
 		res.status(status);
 		res.json({ message });
+	} else {
+		next(error);
 	}
-	next(error);
 }
 export default errorMiddleware;

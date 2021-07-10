@@ -16,7 +16,8 @@ function errorMiddleware(error: unknown, req: Request, res: Response, next: Next
 		res.send(
 			`Error: ${message}<br/><br/><div style="max-width: 1000px; line-height: 150%;">${error.stack}<div/>`
 		);
+	} else {
+		next(error);
 	}
-	next(error);
 }
 export default errorMiddleware;
