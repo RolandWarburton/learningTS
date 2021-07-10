@@ -3,7 +3,7 @@
 
 import { Request, Response, NextFunction } from "express";
 import HttpException from "../exceptions/HttpException";
-import { genericLogger } from "../utils/logger";
+import logger from "../utils/genericLogger";
 
 // in order for express to treat this as propper middleware, it requires ALL the parameters (error, req, res, next) to be passed in
 function errorMiddleware(error: unknown, req: Request, res: Response, next: NextFunction): void {
@@ -11,7 +11,7 @@ function errorMiddleware(error: unknown, req: Request, res: Response, next: Next
 		const status: number = error.status || 500;
 		const message: string = error.message || "Something went wrong";
 
-		genericLogger.warn(`[ERROR] ${status} ${message}`);
+		logger.warn(`HTTP Exception: ${status} ${message}`);
 
 		res.setHeader("Content-Type", "application/json");
 		res.status(status);

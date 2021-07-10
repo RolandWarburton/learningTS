@@ -20,11 +20,6 @@ const logFormat = winston.format.printf(
 	({ timestamp, level, message }) => `${timestamp} ${level}: ${message}`
 );
 
-const logFormatTimestamp = winston.format.combine(
-	winston.format.timestamp({ format: "YYYY-MM-DD HH:mm:ss" }),
-	winston.format.printf(({ timestamp, level, message }) => `${timestamp} ${level}: ${message}`)
-);
-
 // ##──── TRANSPORTS ────────────────────────────────────────────────────────────────────────
 
 // Store a generic list of transports
@@ -68,49 +63,4 @@ const logger = winston.createLogger({
 // 	})
 // );
 
-// ##──── GENERIC LOGGER ────────────────────────────────────────────────────────────────────
-
-// Because this generic logger does not have a {level: info|warn|error|etc} field, it will trigger for every single winston log event
-const genericLogger = winston.createLogger({
-	format: logFormatTimestamp,
-	transports: [],
-});
-
-// This is a dead (silent: true) logger that just exists as a backup if there is no transports defined
-// The purpose of this is because if we are not running in development or production (EG process.env.NODE_ENV === "test")
-// 		Then we decide to just log nothing at all
-genericLogger.add(
-	new winston.transports.Console({
-		silent: true,
-	})
-);
-
-// add a transport for development
-if (process.env["NODE_ENV"] == "development") {
-	genericLogger.add(
-		new winston.transports.Console({
-			format: winston.format.printf(({ level, message }) => `${level} ${message}`),
-		})
-	);
-}
-
-// add a transport for production
-if (process.env["NODE_ENV"] == "production") {
-	genericLogger.add(
-		new winston.transports.Console({
-			format: winston.format.combine(winston.format.splat(), winston.format.colorize()),
-		})
-	);
-}
-
-// ##──── STREAM LOGGER ─────────────────────────────────────────────────────────────────────
-
-// This is an object that can be called through other middleware,
-// 	for example morgan can call the stream.write function to write its logs INTO winston
-const stream = {
-	write: (message: string): void => {
-		logger.info(message.substring(0, message.lastIndexOf("\n")));
-	},
-};
-
-export { genericLogger, logger, stream };
+export default logger;

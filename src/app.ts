@@ -2,7 +2,7 @@ import cors from "cors";
 import express from "express";
 import helmet from "helmet";
 import Route from "./interfaces/routes.interface";
-import { logger } from "./utils/logger";
+import logger from "./utils/genericLogger";
 import httpExceptionMiddleware from "./middleware/httpException.middleware";
 // eslint-disable-next-line node/no-unpublished-import
 import swaggerUi from "swagger-ui-express";
