@@ -2,6 +2,7 @@ import UserController from "../controllers/user.controller";
 import User from "../models/responses/user";
 import HttpException from "../exceptions/HttpException";
 import { Request, Response, NextFunction } from "express";
+import { validateSchema as validateUser } from "../models/responses/user";
 
 describe("test", () => {
 	let mockRequest: Partial<Request>;
@@ -52,6 +53,9 @@ describe("test", () => {
 
 		// expect the response to be this user
 		expect(resultJson).toEqual(expected);
+
+		// validate the response against the model to ensure the model is correct
+		expect(validateUser(resultJson)).toBeTruthy();
 	});
 
 	it("returns user not found error", () => {

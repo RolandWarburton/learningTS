@@ -3,6 +3,7 @@ import supertest, { SuperTest, Request } from "supertest";
 import App from "../../app";
 import UserRoute from "../../routes/user.route";
 import PageNotFoundRoute from "../../routes/pageNotFound.route";
+import { validateSchema as validateUser } from "../../models/responses/user";
 
 describe("user intergrations", () => {
 	const routes = [new UserRoute(), new PageNotFoundRoute()];
@@ -10,22 +11,32 @@ describe("user intergrations", () => {
 	const server = app.getServer();
 	const request: SuperTest<Request> = supertest(server);
 
-	test("where user exists", async () => {
+	test("The user is returned when requested", async () => {
 		const response = await request.get("/user/1");
 		expect(response.status).toBe(200);
 		expect(response.header["content-type"]).toBe("application/json; charset=utf-8");
+
+		// validate the response equals what we expected
 		expect(response.body).toEqual({ id: "1", name: "roland", likes: "chocolate" });
+
+		// validate the response against the model to ensure the model is correct
+		expect(validateUser(response.body)).toBeTruthy();
 	});
 
-	test("where user does not exist", async () => {
-		const requests = ["/user/not found", "/user/-1"];
+	test("Where user does not exist return 404", async () => {
+		const requests = ["/user/not found", "/user/-1", "/user/99999"];
 		for await (const r of requests) {
 			const response = await request.get(r);
 			expect(response.status).toBe(404);
+			expect(response.header["content-type"]).toBe("application/json; charset=utf-8");
+			expect(response.body).toEqual({ message: "user not found" });
 		}
-		// for (const r in requests) {
-		// 	const response = await request.get(r);
-		// 	expect(response.status).toBe(404);
-		// }
+	});
+
+	test("No id param returns 404", async () => {
+		const response = await request.get("/users/");
+		expect(response.status).toBe(404);
+		expect(response.header["content-type"]).toBe("application/json; charset=utf-8");
+		expect(response.body).toEqual({ message: "Page not found" });
 	});
 });
