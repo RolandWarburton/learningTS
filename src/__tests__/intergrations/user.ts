@@ -17,21 +17,6 @@ describe("user intergrations", () => {
 		expect(response.body).toEqual({ id: "1", name: "roland", likes: "chocolate" });
 	});
 
-	// test("where user does not exist", async () => {
-	// 	const response = await request.get("/user/-1");
-	// 	expect(response.status).toBe(404);
-	// 	// expect(response.header["content-type"]).toBe("application/json; charset=utf-8");
-	// 	// expect(response.body).toEqual({ id: "1", name: "roland", likes: "chocolate" });
-	// });
-
-	// test("where user does not exist", async () => {
-	// 	const requests = ["/user/not found", "/user/-1"];
-	// 	for (const r in requests) {
-	// 		const response = await request.get(r);
-	// 		expect(response.status).toBe(404);
-	// 	}
-	// });
-
 	test("where user does not exist", async () => {
 		const requests = ["/user/not found", "/user/-1"];
 		for await (const r of requests) {
