@@ -46,19 +46,19 @@ const unit = {
 	testMatch: ["**/__tests__/*.+(ts|tsx|js)"],
 };
 
-const intergration = {
+const integration = {
 	...base,
-	testMatch: ["**/__tests__/intergrations/*.+(ts|tsx|js)"],
+	testMatch: ["**/__tests__/integrations/*.+(ts|tsx|js)"],
 };
 
 module.exports = () => {
 	switch (process.env["SUITE"]) {
 		case "unit":
 			return unit;
-		case "intergration":
-			return intergration;
+		case "integration":
+			return integration;
 		default:
-			return { ...unit, testMatch: [...unit.testMatch, ...intergration.testMatch] };
+			return { ...unit, testMatch: [...unit.testMatch, ...integration.testMatch] };
 	}
 };
 

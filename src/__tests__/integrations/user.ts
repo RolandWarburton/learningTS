@@ -5,7 +5,7 @@ import UserRoute from "../../routes/user.route";
 import PageNotFoundRoute from "../../routes/pageNotFound.route";
 import { validateSchema as validateUser } from "../../models/responses/user";
 
-describe("user intergrations", () => {
+describe("user integrations", () => {
 	const routes = [new UserRoute(), new PageNotFoundRoute()];
 	const app = new App(routes);
 	const server = app.getServer();
