@@ -23,7 +23,7 @@ describe("user integrations", () => {
 		expect(validateUser(response.body)).toBeTruthy();
 	});
 
-	test("Where user does not exist return 404", async () => {
+	test("Where user does not exist return 404 user not found", async () => {
 		const requests = ["/user/not found", "/user/-1", "/user/99999"];
 		for await (const r of requests) {
 			const response = await request.get(r);
@@ -33,7 +33,7 @@ describe("user integrations", () => {
 		}
 	});
 
-	test("No id param returns 404", async () => {
+	test("No id param returns 404 page not found", async () => {
 		const response = await request.get("/users/");
 		expect(response.status).toBe(404);
 		expect(response.header["content-type"]).toBe("application/json; charset=utf-8");
