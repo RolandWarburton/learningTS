@@ -6,7 +6,7 @@
 	"main": "index.js",
 	"scripts": {
 		"start": "npm run build && node --require 'dotenv/config' --inspect dist/index.js",
-		"dev": "DEBUG=app* concurrently \"npm run lint:watch\" \"nodemon --require 'dotenv/config' src/index.ts --delay 1 --exec ts-node src/index.ts\"",
+		"dev": "DEBUG=app* nodemon --exec nodemon --config nodemon.json src/index.ts",
 		"prebuild": "cp swagger.json dist/swagger.json",
 		"build": "npm run prebuild && tsc -p .",
 		"prettier:watch": "onchange 'src/**/*.ts' -- prettier --write {{changed}}",
