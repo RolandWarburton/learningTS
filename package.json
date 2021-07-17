@@ -7,8 +7,7 @@
 	"scripts": {
 		"start": "npm run build && node --require 'dotenv/config' --inspect dist/index.js",
 		"dev": "DEBUG=app* nodemon --exec nodemon --config nodemon.json src/index.ts",
-		"prebuild": "cp swagger.json dist/swagger.json",
-		"build": "npm run prebuild && tsc -p .",
+		"build": "tsc -p .",
 		"prettier:watch": "onchange 'src/**/*.ts' -- prettier --write {{changed}}",
 		"lint": "eslint . --ext .ts",
 		"lint:fix": "eslint . --ext .ts --fix",
