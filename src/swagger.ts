@@ -1,9 +1,8 @@
 const scheme = {
-	openapi: "3.1.0",
+	openapi: "3.0.0",
 	info: {
 		title: "my test api",
 		version: "1.0",
-		summary: "this is the summary",
 		description: "this is the description",
 		contact: {
 			name: "Roland",
@@ -54,13 +53,6 @@ const scheme = {
 				title: "User",
 				type: "object",
 				description: "",
-				examples: [
-					{
-						id: 142,
-						name: "Roland",
-						likes: "Chocolate",
-					},
-				],
 				properties: {
 					id: {
 						type: "string",
@@ -74,6 +66,15 @@ const scheme = {
 					},
 				},
 				required: ["id", "name", "likes"],
+				"x-examples": {
+					"example-1": {
+						value: {
+							id: "1",
+							name: "roland",
+							likes: "ice cream",
+						},
+					},
+				},
 			},
 		},
 		securitySchemes: {},
